@@ -1,7 +1,8 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Button, SafeAreaView, TextInput, FlatList } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, TextInput, FlatList } from "react-native";
 import React, { useState } from "react";
 import Message from "./src/components/Message";
+import Button from "./src/components/Button";
 
 export default function App() {
   const [message, setMessage] = useState([
@@ -23,7 +24,7 @@ export default function App() {
       />
       <View style={styles.footer}>
         <TextInput placeholder="O que deseja?" style={styles.input} />
-        <Button title="Enviar" onPress={onSend} />
+        <Button onPress={onSend}/>
       </View>
     </SafeAreaView>
   );
