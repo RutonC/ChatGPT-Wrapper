@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, SafeAreaView, TextInput, FlatList } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, TextInput, FlatList, KeyboardAvoidingView, Platform } from "react-native";
 import React, { useState } from "react";
 import Message from "./src/components/Message";
 import Button from "./src/components/Button";
@@ -12,20 +12,24 @@ export default function App() {
   ]);
   const [prompt, setPrompt] = useState('');
   const onSend = () => {
-    console.warn("Message sended");
+    setMessage((existingMessage) => [...existingMessage, { role: 'user', content: prompt }]);
+
+    setPrompt('');
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={message}
-        contentContainerStyle={{ gap: 10, padding: 10 }}
-        renderItem={({ item }) => <Message message={item} />}
-      />
-      <View style={styles.footer}>
-        <TextInput placeholder="O que deseja?" style={styles.input} />
-        <Button onPress={onSend}/>
-      </View>
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? 'padding' : 'height'} style={{flex:1}}>
+        <FlatList
+          data={message}
+          contentContainerStyle={{ gap: 10, padding: 10 }}
+          renderItem={({ item }) => <Message message={item} />}
+        />
+        <View style={styles.footer}>
+          <TextInput value={prompt} onChangeText={setPrompt} placeholder="O que deseja?" style={styles.input} />
+          <Button onPress={onSend} />
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
